@@ -31,6 +31,15 @@ def sklearnSVM(train_data, test_data, train_labels, test_labels):
     
     print("Confusion Matrix: \n{}\n".format(confusion_matrix(test_labels, pred)))
 
+def SVMParams(svm):
+    print("SVM parameters:")
+    print("Kernel type: %s" % svm.getKernelType())
+    print("Type       : %s" % svm.getType())
+    print("C          : %s" % svm.getC())
+    print("Degree     : %s" % svm.getDegree())
+    print("Nu         : %s" % svm.getNu())
+    print("Gamma      : %s\n" % svm.getGamma())
+
 def opencvSVM(train_data, test_data, train_labels, test_labels):
     svm = cv2.ml.SVM_create()
 
@@ -56,16 +65,6 @@ def opencvSVM(train_data, test_data, train_labels, test_labels):
     print("Report: \n{}".format(classification_report(test_labels, pred)))
     
     print("Confusion Matrix: \n{}\n".format(confusion_matrix(test_labels, pred)))   
-
-def SVMParams(svm):
-    print("SVM parameters:")
-    print("Kernel type: %s" % svm.getKernelType())
-    print("Type       : %s" % svm.getType())
-    print("C          : %s" % svm.getC())
-    print("Degree     : %s" % svm.getDegree())
-    print("Nu         : %s" % svm.getNu())
-    print("Gamma      : %s\n" % svm.getGamma())
-
 
 if __name__ == "__main__":
     imgs, labels = loadImages()
