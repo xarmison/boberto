@@ -8,14 +8,14 @@ from os import listdir
 
 def loadImages():
     imgs = []
-    labels = np.repeat([i for i in range(0, 7)], 25)
+    labels = np.repeat([i for i in range(0, 3)], 20)
     
     # Percorre todos os diretorios de data e carrega as imagens
     for folder in listdir("data"):
         for img in listdir("data/" + folder):
+            print(img)
             imgs.append(cv2.imread("data/" + folder + "/" + img))
-            
-    
+
     return np.asarray(imgs).reshape(len(imgs), -1), labels
         
 def sklearnSVM(train_data, test_data, train_labels, test_labels):
@@ -69,15 +69,8 @@ def opencvSVM(train_data, test_data, train_labels, test_labels):
 if __name__ == "__main__":
     imgs, labels = loadImages()
 
-    train_data, test_data, train_labels, test_labels = train_test_split(
-        imgs, labels, test_size = 0.2, random_state = None
-    )
+    train_data, test_data, train_labels, test_labels = train_test_split(imgs, labels, test_size = 0.2, random_state = None)
 
     sklearnSVM(train_data, test_data, train_labels, test_labels)
 
     opencvSVM(train_data, test_data, train_labels, test_labels)
-
- 
-
-    
-    

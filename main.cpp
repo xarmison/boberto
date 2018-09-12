@@ -57,15 +57,24 @@ int main(int argc, char **argv){
         {
             vision.show();
 
-            switch (cv::waitKey(1))
-            {
-            case 110:
-                createFota(folders, contFolder, nomeImg, imgNum, vision, auxExt, cont);
-                break;
-            case 112:
-                cout << folders[contFolder] << endl;
-                contFolder++;
-                break;
+            switch (cv::waitKey(1)){
+                case 110:
+                    for(int i = 0; i < 28; i++){
+                        for(int j = 0; j < 28; j++){
+                            imgNum.at<uchar>(i,j) = 0;
+                        }
+                    }
+                    createFota(folders, contFolder, nomeImg, imgNum, vision, auxExt, cont);
+                    break;
+                case 112:
+                    contFolder++;
+                    cout << folders[contFolder] << endl;
+                    cont = 0;
+                    break;
+                case 97:
+                    contFolder--;
+                    cout << folders[contFolder] << endl;
+                    break;
             }
         }
     }
