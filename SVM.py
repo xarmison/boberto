@@ -11,10 +11,9 @@ def loadImages():
     labels = np.repeat([i for i in range(0, 3)], 20)
     
     # Percorre todos os diretorios de data e carrega as imagens
-    for folder in listdir("data"):
-        for img in listdir("data/" + folder):
-            print(img)
-            imgs.append(cv2.imread("data/" + folder + "/" + img))
+    for folder in listdir("imgsResized"):
+        for img in listdir("imgsResized/" + folder):
+            imgs.append(cv2.imread("imgsResized/" + folder + "/" + img))
 
     return np.asarray(imgs).reshape(len(imgs), -1), labels
         

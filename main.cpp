@@ -6,16 +6,13 @@
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 #include "opencv2/imgcodecs.hpp"
-#include <opencv2/ml.hpp>
 #include <stdio.h>
 #include <vector>
-#include <stack>
-#include <list>
 
 using namespace std;
 
 void createFota(vector<string> &folders, int &contFolder, string &nomeImg, cv::Mat &imgNum, Vision &vision, string &auxExt, int &cont){
-    std::string nome = folders[contFolder] + nomeImg + std::to_string(cont) + auxExt;
+    std::string nome = "data/" + folders[contFolder] + nomeImg + std::to_string(cont) + auxExt;
     std::cout << nome << std::endl;
     vision.setEstado(1);
 
@@ -32,6 +29,7 @@ void createFota(vector<string> &folders, int &contFolder, string &nomeImg, cv::M
             vision.setEstado(2);
             std::cout << "Salvou!" << std::endl;
             cout << nome << endl;
+            cv::flip(imgNum, imgNum, +1);
             cv::imwrite(nome, imgNum);
             cont++;
             break;
@@ -41,7 +39,7 @@ void createFota(vector<string> &folders, int &contFolder, string &nomeImg, cv::M
 
 int main(int argc, char **argv){
     std::string nomeImg = "imagemNumero", auxExt = ".jpg";
-    std::vector<std::string> folders = {"./0/", "1/", "2/", "3/", "4/", "5/", "6/", "7/", "8/", "9/"};
+    std::vector<std::string> folders = {"0/", "1/", "2/", "3/", "4/", "5/", "6/", "7/", "8/", "9/"};
     int cont = 0, contFolder = 0;
     cv::Mat imgNum(28, 28, CV_8UC1, 1);
 
@@ -64,6 +62,7 @@ int main(int argc, char **argv){
                             imgNum.at<uchar>(i,j) = 0;
                         }
                     }
+                    
                     createFota(folders, contFolder, nomeImg, imgNum, vision, auxExt, cont);
                     break;
                 case 112:
