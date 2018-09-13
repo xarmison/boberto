@@ -107,7 +107,7 @@ class Vision
     void cvTackBarEvents(int pos, void *);
     bool iniciou = false;
     int setTexto = 0;
-    std::string text;
+    std::string text, textMenu, textMenu1, textMenu2;
 
   public:
     Vision(int argc, char **argv);
@@ -122,11 +122,15 @@ class Vision
     inline void show()
     {
         flip(TheInputImageCopy, TheInputImageCopy, 1);
-        cv::Point posText;
-        posText.x = 0, posText.y = 480;
-        //std::string text = "Iniciou";
-        //if(iniciou)
-        cv::putText(TheInputImageCopy, text, posText, 3, 1, cv::Scalar(0, 255, 0), 1, 8);
+        cv::Point posText, posTextMenu, posTextMenu1, posTextMenu2;
+        posText.x = 20, posText.y = 30;
+        posTextMenu.x = 20, posTextMenu.y = 70;
+        posTextMenu1.x = 20, posTextMenu1.y = 110;
+        posTextMenu2.x = 20, posTextMenu2.y = 150;
+        cv::putText(TheInputImageCopy, text, posText, 3, 1, cv::Scalar(0, 0, 255), 1, 8);
+        cv::putText(TheInputImageCopy, textMenu, posTextMenu, 3, 1, cv::Scalar(0, 0, 255), 1, 8);
+        cv::putText(TheInputImageCopy, textMenu1, posTextMenu1, 3, 1, cv::Scalar(0, 0, 255), 1, 8);
+        cv::putText(TheInputImageCopy, textMenu2, posTextMenu2, 3, 1, cv::Scalar(0, 0, 255), 1, 8);
         imshow("in", TheInputImageCopy);
     }
 
@@ -146,7 +150,11 @@ class Vision
         case 3:
             text = "Enviou o Programa!";
             break;
-
+        case 4:
+            textMenu =  " n  - Nova Imagem";
+            textMenu1 = " p  - Proximo Numero";
+            textMenu2 = "Esc - Sair";
+            text =      " h  - Ajuda";
         default:
             break;
         }

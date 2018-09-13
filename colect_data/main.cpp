@@ -58,6 +58,8 @@ int main(int argc, char **argv){
                     contFolder--;
                     cout << folders[contFolder] << endl;
                     break;
+                case 104:
+                    vision.setEstado(4);
             }
         }
     }
