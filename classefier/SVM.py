@@ -8,12 +8,12 @@ from os import listdir
 
 def loadImages():
     imgs = []
-    labels = np.repeat([i for i in range(0, 3)], 20)
+    labels = np.repeat([i for i in range(0, 5)], 20)
     
     # Percorre todos os diretorios de data e carrega as imagens
-    for folder in listdir("dataset_num_camera"):
-        for img in listdir("dataset_num_camera/" + folder):
-            imgs.append(cv2.imread("dataset_num_camera/" + folder + "/" + img))
+    for folder in listdir("../dataset_num_camera"):
+        for img in listdir("../dataset_num_camera/" + folder):
+            imgs.append(cv2.imread("../dataset_num_camera/" + folder + "/" + img))
 
     return np.asarray(imgs).reshape(len(imgs), -1), labels
         
@@ -55,6 +55,8 @@ def opencvSVM(train_data, test_data, train_labels, test_labels):
 
     svm.trainAuto(np.float32(train_data), cv2.ml.ROW_SAMPLE, train_labels)
 
+    svm.save("weights/opencv_svm.yml")
+
     pred = svm.predict(np.float32(test_data))[1]
     
     print("########### OpenCV ###########\n")
@@ -65,11 +67,24 @@ def opencvSVM(train_data, test_data, train_labels, test_labels):
     
     print("Confusion Matrix: \n{}\n".format(confusion_matrix(test_labels, pred)))   
 
+def loadSVM():
+    imagem = cv2.imread("./saida.jpg", 0)
+
+    cv2.imshow("saida", imagem)
+
+    #svm = cv2.ml.SVM_load("weights/opencv_svm.yml")
+
+    #pred = svm.predict(np.float32(imagem))[1]
+
+    #print(pred)
+
 if __name__ == "__main__":
-    imgs, labels = loadImages()
+    #imgs, labels = loadImages()
 
-    train_data, test_data, train_labels, test_labels = train_test_split(imgs, labels, test_size = 0.2, random_state = None)
+    #train_data, test_data, train_labels, test_labels = train_test_split(imgs, labels, test_size = 0.2, random_state = None)
 
-    sklearnSVM(train_data, test_data, train_labels, test_labels)
+    #sklearnSVM(train_data, test_data, train_labels, test_labels)
 
-    opencvSVM(train_data, test_data, train_labels, test_labels)
+    #opencvSVM(train_data, test_data, train_labels, test_labels)
+
+    loadSVM()

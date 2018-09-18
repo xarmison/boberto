@@ -6,10 +6,9 @@
 using namespace std;
 using namespace cv;
 
-void createPicture(vector<string> &folders, int &contFolder, string &nomeImg, Mat &imgNum, Vision &vision, string &auxExt, int &cont){
-    string nome = "../dataset_num_camera/" + folders[contFolder] + nomeImg + to_string(cont) + auxExt;
+void createPicture(string &nomeImg, Mat &imgNum, Vision &vision){
     Mat visual;
-    cout << nome << endl;
+    cout << nomeImg << endl;
     vision.setEstado(1);
 
     while (1){
@@ -24,19 +23,16 @@ void createPicture(vector<string> &folders, int &contFolder, string &nomeImg, Ma
         if (waitKey(1) == 27){
             vision.setEstado(2);
             cout << "Salvou!" << endl;
-            cout << nome << endl;
+            cout << nomeImg << endl;
             //flip(imgNum, imgNum, +1);
-            imwrite(nome, visual);
-            cont++;
+            imwrite(nomeImg, visual);
             break;
         }
     }
 }
 
 int main(int argc, char **argv){
-    string nomeImg = "imagemNumero", auxExt = ".jpg";
-    vector<string> folders = {"0/", "1/", "2/", "3/", "4/", "5/", "6/", "7/", "8/", "9/"};
-    int cont = 0, contFolder = 0;
+    string nomeImg = "saida.jpg";
     Mat imgNum(28, 28, CV_8UC1, 1);
 
     Vision vision(argc, argv);
@@ -48,20 +44,11 @@ int main(int argc, char **argv){
             vision.show();
 
             switch (waitKey(1)){
-                case 110:
+                case 110://n
                     imgNum = Mat::zeros(28,28,CV_8UC1);
-                    createPicture(folders, contFolder, nomeImg, imgNum, vision, auxExt, cont);
+                    createPicture(nomeImg, imgNum, vision);
                     break;
-                case 112:
-                    contFolder++;
-                    cout << folders[contFolder] << endl;
-                    cont = 0;
-                    break;
-                case 97:
-                    contFolder--;
-                    cout << folders[contFolder] << endl;
-                    break;
-                case 104:
+                case 104://h
                     vision.setEstado(4);
             }
         }
