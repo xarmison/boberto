@@ -40,7 +40,7 @@ def SVMParams(svm):
     print("Gamma      : %s\n" % svm.getGamma())
 
 def opencvSVM(train_data, test_data, train_labels, test_labels):
-    svm = cv2.ml.SVM_create()
+    svm = cv2.ml.SVM_create
 
     # Set SVM type
     svm.setType(cv2.ml.SVM_C_SVC)
@@ -68,15 +68,18 @@ def opencvSVM(train_data, test_data, train_labels, test_labels):
     print("Confusion Matrix: \n{}\n".format(confusion_matrix(test_labels, pred)))   
 
 def loadSVM():
-    imagem = cv2.imread("./saida.jpg", 0)
+    svmloaded = cv2.ml.SVM_load("weights/opencv_svm.yml")
 
-    cv2.imshow("saida", imagem)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    #svm.load("weights/opencv_svm.yml")
 
-    #svm = cv2.ml.SVM_load("weights/opencv_svm.yml")
+    imagem = cv2.imread("./saida.jpg")
 
-    #pred = svm.predict(np.float32(imagem))[1]
+    print(svmloaded)
+    #cv2.imshow("saida", imagem)
+    #cv2.waitKey(0)
+    #cv2.destroyAllWindows()
+
+    pred = svmloaded.predict(np.float32(imagem))[0]
 
     #print(pred)
 
