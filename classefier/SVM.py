@@ -71,6 +71,8 @@ def loadSVM():
     imagem = cv2.imread("./saida.jpg", 0)
 
     cv2.imshow("saida", imagem)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
     #svm = cv2.ml.SVM_load("weights/opencv_svm.yml")
 
