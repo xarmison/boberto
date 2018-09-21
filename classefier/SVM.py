@@ -4,6 +4,7 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report
 from os import listdir
+import time
 
 
 def loadImages():
@@ -18,13 +19,16 @@ def loadImages():
     return np.asarray(imgs).reshape(len(imgs), -1), labels
         
 def sklearnSVM(train_data, test_data, train_labels, test_labels):
+    print("########### Sklearn ###########\n")
+
     svm = SVC(kernel="poly", C = 1.0, degree = 3, random_state = None)
 
+    start = time.clock()
     svm.fit(train_data, train_labels)
+    end = time.clock()
+    print("Traning took {:.3f}s\n".format(end-start))
 
     pred = svm.predict(test_data)
-    
-    print("########### Sklearn ###########\n")
     
     print("Report: \n{}".format(classification_report(test_labels, pred)))
     
@@ -39,8 +43,10 @@ def SVMParams(svm):
     print("Nu         : %s" % svm.getNu())
     print("Gamma      : %s\n" % svm.getGamma())
 
-def opencvSVM(train_data, test_data, train_labels, test_labels):
-    svm = cv2.ml.SVM_create
+def opencvSVM(train_data, test_data, train_labels, test_labels, trainAuto=False):
+    print("########### OpenCV ###########\n")
+
+    svm = cv2.ml.SVM_create()
 
     # Set SVM type
     svm.setType(cv2.ml.SVM_C_SVC)
@@ -53,13 +59,17 @@ def opencvSVM(train_data, test_data, train_labels, test_labels):
     # Set parameter Gamma
     svm.setGamma(0.50625)
 
-    svm.trainAuto(np.float32(train_data), cv2.ml.ROW_SAMPLE, train_labels)
+    start = time.clock()
+    if(trainAuto):
+        svm.trainAuto(np.float32(train_data), cv2.ml.ROW_SAMPLE, train_labels)
+    else:
+        svm.train(np.float32(train_data), cv2.ml.ROW_SAMPLE, train_labels)
+    end = time.clock()
+    print("Traning took {:.3f}s\n".format(end-start))
 
     svm.save("weights/opencv_svm.yml")
-
-    pred = svm.predict(np.float32(test_data))[1]
     
-    print("########### OpenCV ###########\n")
+    pred = svm.predict(np.float32(test_data))[1]
 
     SVMParams(svm)
 
@@ -68,28 +78,27 @@ def opencvSVM(train_data, test_data, train_labels, test_labels):
     print("Confusion Matrix: \n{}\n".format(confusion_matrix(test_labels, pred)))   
 
 def loadSVM():
-    svmloaded = cv2.ml.SVM_load("weights/opencv_svm.yml")
+    svm = cv2.ml.SVM_load("weights/opencv_svm.yml")
 
-    #svm.load("weights/opencv_svm.yml")
+    img = cv2.imread("./saida.jpg")
 
-    imagem = cv2.imread("./saida.jpg")
+    img = np.array([np.reshape(img, (2352,))])
 
-    print(svmloaded)
-    #cv2.imshow("saida", imagem)
+    #cv2.imshow("saida", img)
     #cv2.waitKey(0)
     #cv2.destroyAllWindows()
+   
+    pred = svm.predict( np.float32(img) )[1]
 
-    pred = svmloaded.predict(np.float32(imagem))[0]
-
-    #print(pred)
+    print(pred)
 
 if __name__ == "__main__":
-    #imgs, labels = loadImages()
+    imgs, labels = loadImages()
+    
+    train_data, test_data, train_labels, test_labels = train_test_split(imgs, labels, test_size = 0.2, random_state = None)
 
-    #train_data, test_data, train_labels, test_labels = train_test_split(imgs, labels, test_size = 0.2, random_state = None)
+    sklearnSVM(train_data, test_data, train_labels, test_labels)
 
-    #sklearnSVM(train_data, test_data, train_labels, test_labels)
-
-    #opencvSVM(train_data, test_data, train_labels, test_labels)
+    opencvSVM(train_data, test_data, train_labels, test_labels, trainAuto=True)
 
     loadSVM()
