@@ -59,6 +59,7 @@ def opencvSVM(train_data, test_data, train_labels, test_labels, trainAuto=False)
     # Set parameter Gamma
     svm.setGamma(0.50625)
 
+    print("Traning...")
     start = time.clock()
     if(trainAuto):
         svm.trainAuto(np.float32(train_data), cv2.ml.ROW_SAMPLE, train_labels)
